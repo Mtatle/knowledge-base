@@ -29,14 +29,12 @@ window.onload = function() {
         if (iframeElement) { // Check if iframeElement is not null
             iframeElement.src = embedUrl;
         }
-
-        // Search functionality for index.html
-        const searchButton = document.getElementById('searchButton');
+    } else { // Code for index.html, as docId will be null
         const searchInput = document.getElementById('searchInput');
         const buttons = document.querySelectorAll('.button-grid .button');
 
-        if (searchButton && searchInput) { // Check if search elements exist
-            searchButton.addEventListener('click', function() {
+        if (searchInput && buttons.length > 0) {
+            searchInput.addEventListener('input', function() { // Changed from 'click' on a button to 'input' on the search bar
                 const searchTerm = searchInput.value.toLowerCase();
                 buttons.forEach(button => {
                     const buttonText = button.textContent.toLowerCase();
@@ -46,13 +44,6 @@ window.onload = function() {
                         button.style.display = 'none';
                     }
                 });
-            });
-
-            // Optional: Allow searching by pressing Enter in the input field
-            searchInput.addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    searchButton.click();
-                }
             });
         }
     }
