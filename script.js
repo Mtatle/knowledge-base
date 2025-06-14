@@ -28,12 +28,15 @@ window.onload = function() {
         // Set the source for the iframe
         if (iframeElement) { // Check if iframeElement is not null
             iframeElement.src = embedUrl;
-        }
-    } else { // Code for index.html, as docId will be null
+        }    } else { // Code for index.html, as docId will be null
+        console.log("Setting up search functionality...");
         const searchInput = document.getElementById('searchInput');
         const mainElement = document.querySelector('main');
 
         if (searchInput && mainElement) {
+            console.log("Search elements found, adding event listener...");
+            
+            // Create no results message
             let noResultsMessage = document.getElementById('noResultsMessage');
             if (!noResultsMessage) {
                 noResultsMessage = document.createElement('p');
@@ -41,17 +44,19 @@ window.onload = function() {
                 noResultsMessage.style.textAlign = 'center';
                 noResultsMessage.style.marginTop = '20px';
                 noResultsMessage.style.fontSize = '1.1rem';
-                noResultsMessage.style.color = '#4a5568'; // Using a color from your existing palette
-                // Insert the message at the beginning of the main content area
+                noResultsMessage.style.color = '#4a5568';
+                noResultsMessage.style.fontFamily = 'Montserrat, sans-serif';
                 mainElement.insertBefore(noResultsMessage, mainElement.firstChild);
             }
-            noResultsMessage.style.display = 'none'; // Ensure it's hidden initially
+            noResultsMessage.style.display = 'none';
 
             searchInput.addEventListener('input', function() {
+                console.log("Search input changed:", searchInput.value);
                 const searchTerm = searchInput.value.toLowerCase().trim();
                 let overallResultsFound = false;
 
                 const buttonGrids = mainElement.querySelectorAll('.button-grid');
+                console.log("Found", buttonGrids.length, "button grids");
 
                 buttonGrids.forEach(grid => {
                     let resultsInThisGrid = false;
@@ -59,26 +64,24 @@ window.onload = function() {
                     
                     buttonsInGrid.forEach(button => {
                         const buttonText = button.textContent.toLowerCase();
+                        console.log("Checking button:", buttonText, "against search term:", searchTerm);
+                        
                         if (searchTerm === '' || buttonText.includes(searchTerm)) {
-                            button.style.display = 'flex'; // Reapply display:flex from CSS
-                            if (searchTerm !== '' && buttonText.includes(searchTerm)) {
-                                resultsInThisGrid = true;
-                                overallResultsFound = true;
-                            } else if (searchTerm === '') {
-                                resultsInThisGrid = true; // Consider empty search as "results" for section visibility
-                                overallResultsFound = true; // Ensure no "no results" message for empty search
-                            }
+                            button.style.display = 'flex';
+                            resultsInThisGrid = true;
+                            overallResultsFound = true;
                         } else {
                             button.style.display = 'none';
                         }
                     });
 
+                    // Show/hide section titles and grids
                     const sectionTitle = grid.previousElementSibling;
                     if (resultsInThisGrid || searchTerm === '') {
                         if (sectionTitle && sectionTitle.tagName === 'H2') {
-                            sectionTitle.style.display = ''; // Revert to default/CSS display
+                            sectionTitle.style.display = 'block';
                         }
-                        grid.style.display = 'grid'; // Reapply display:grid from CSS
+                        grid.style.display = 'grid';
                     } else {
                         if (sectionTitle && sectionTitle.tagName === 'H2') {
                             sectionTitle.style.display = 'none';
@@ -87,13 +90,15 @@ window.onload = function() {
                     }
                 });
 
-                if (searchTerm !== '' && !overallResultsFound) {
-                    noResultsMessage.textContent = `No articles found matching "${searchInput.value}"`;
-                    noResultsMessage.style.display = ''; // Show message
+                // Show/hide no results message
+                if (searchTerm !== '' && !overallResultsFound) {                    noResultsMessage.textContent = `No articles found matching "${searchInput.value}"`;
+                    noResultsMessage.style.display = 'block';
                 } else {
-                    noResultsMessage.style.display = 'none'; // Hide message
+                    noResultsMessage.style.display = 'none';
                 }
             });
+        } else {
+            console.log("Search elements not found!");
         }
     }
 };

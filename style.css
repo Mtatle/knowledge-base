@@ -1,34 +1,70 @@
 /* General Styling */
 body {
-    font-family: 'Montserrat', sans-serif; /* Changed to Montserrat */
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Modern gradient background */
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
     color: #333;
     margin: 0;
     padding: 20px;
     line-height: 1.6;
+    min-height: 100vh;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .container {
-    max-width: 1000px; /* Slightly wider for better spacing */
-    margin: 40px auto; /* Added top/bottom margin */
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 12px; /* More pronounced rounded corners */
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1); /* Enhanced shadow */
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.06);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 2;
 }
 
 header {
     text-align: center;
-    margin-bottom: 50px; /* Increased margin */
+    margin-bottom: 60px;
     position: relative;
 }
 
+header::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 2px;
+}
+
 .logo-image {
-    width: 100px; /* Adjusted size */
-    height: 100px; /* Adjusted size for a perfect circle if the image is square */
-    margin-bottom: 20px;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 25px;
     border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Slightly stronger shadow */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+    transform: scale(1.05) rotate(5deg);
 }
 
 .logo-text {
@@ -38,42 +74,127 @@ header {
 }
 
 header h1 {
-    font-size: 3rem; /* Larger */
-    color: #1a2533; /* Darker, more impactful blue */
-    margin-bottom: 15px;
-    font-weight: 700; /* Bolder */
+    font-size: 3.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
 header p {
-    font-size: 1.2rem; /* Larger */
-    color: #4a5568; /* Softer, modern gray */
-    margin-bottom: 30px; /* Added margin */
+    font-size: 1.3rem;
+    color: #4a5568;
+    margin-bottom: 40px;
+    font-weight: 400;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.9;
 }
 
 /* Search Bar Styling */
 .search-container {
-    margin-top: 30px; /* Increased margin */
+    margin-top: 30px;
     display: flex;
     justify-content: center;
 }
 
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 20px;
+    color: #a0aec0;
+    z-index: 10;
+}
+
 #searchInput {
-    padding: 15px 20px; /* Increased padding for bigger size */
-    border: 1px solid #d2d6dc; /* Softer border */
-    border-radius: 25px; /* Fully rounded edges */
-    width: 450px; /* Wider search bar */
-    font-size: 1.1rem; /* Slightly larger font */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle shadow */
+    padding: 18px 25px 18px 55px;
+    border: 2px solid #e2e8f0;
+    border-radius: 30px;
+    width: 500px;
+    font-size: 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    background-color: #ffffff;
 }
 
 #searchInput:focus {
-    border-color: #5a67d8; /* Indigo focus color */
-    box-shadow: 0 0 0 0.25rem rgba(90, 103, 216, 0.25); /* Indigo shadow */
+    border-color: #5a67d8;
+    box-shadow: 0 0 0 0.25rem rgba(90, 103, 216, 0.15), 0 8px 25px rgba(0,0,0,0.12);
     outline: none;
+    transform: translateY(-2px);
 }
 
-/* Removed #searchButton styles */
+#searchInput:focus + .search-icon {
+    color: #5a67d8;
+}
+
+#searchInput::-webkit-input-placeholder {
+    color: #a0aec0;
+    font-weight: 400;
+}
+
+#searchInput::-moz-placeholder {
+    color: #a0aec0;
+    font-weight: 400;
+}
+
+/* Stats Container */
+.stats-container {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 50px;
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 0.5s forwards;
+}
+
+.stat-item {
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 main h2 {
     font-size: 1.8rem; /* Larger */
@@ -171,4 +292,72 @@ main h2::before { /* Adding space for icons if they were to be added via CSS */
     width: 100%;
     height: 100%;
     border: none;
+}
+
+/* Animated Particles */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 50%;
+    animation: float 20s infinite linear;
+}
+
+.particle:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 15s;
+}
+
+.particle:nth-child(2) {
+    left: 20%;
+    animation-delay: 2s;
+    animation-duration: 18s;
+}
+
+.particle:nth-child(3) {
+    left: 70%;
+    animation-delay: 4s;
+    animation-duration: 22s;
+}
+
+.particle:nth-child(4) {
+    left: 80%;
+    animation-delay: 6s;
+    animation-duration: 16s;
+}
+
+.particle:nth-child(5) {
+    left: 90%;
+    animation-delay: 8s;
+    animation-duration: 20s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
 }
