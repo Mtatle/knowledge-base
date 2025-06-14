@@ -20,10 +20,40 @@ window.onload = function() {
         const iframeElement = document.getElementById('doc-iframe');
 
         // Set the document title in the header and the browser tab
-        document.title = docTitle;
-        titleElement.textContent = docTitle;
-        
+        if (document.title && titleElement) { // Check if titleElement is not null
+            document.title = docTitle;
+            titleElement.textContent = docTitle;
+        }
+            
         // Set the source for the iframe
-        iframeElement.src = embedUrl;
+        if (iframeElement) { // Check if iframeElement is not null
+            iframeElement.src = embedUrl;
+        }
+
+        // Search functionality for index.html
+        const searchButton = document.getElementById('searchButton');
+        const searchInput = document.getElementById('searchInput');
+        const buttons = document.querySelectorAll('.button-grid .button');
+
+        if (searchButton && searchInput) { // Check if search elements exist
+            searchButton.addEventListener('click', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                buttons.forEach(button => {
+                    const buttonText = button.textContent.toLowerCase();
+                    if (buttonText.includes(searchTerm)) {
+                        button.style.display = '';
+                    } else {
+                        button.style.display = 'none';
+                    }
+                });
+            });
+
+            // Optional: Allow searching by pressing Enter in the input field
+            searchInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    searchButton.click();
+                }
+            });
+        }
     }
 };

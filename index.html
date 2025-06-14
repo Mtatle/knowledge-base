@@ -13,13 +13,23 @@
 
     <div class="container">
         <header>
-            <h1 class="logo-text">Your Logo</h1> 
+            <img src="logo.png" alt="Logo" class="logo-image"> <!-- Changed from h1 to img -->
             <h1>Knowledge Base</h1>
             <p>Your go-to resource for guides, presentations, and best practices.</p>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search articles...">
+                <button id="searchButton">Search</button>
+            </div>
         </header>
 
         <main>
-            <h2>Articles & Guides</h2>
+            <h2>🌟 Featured Articles</h2>
+            <div class="button-grid">
+                <a href="viewer.html?id=1GtO-5cJVi6PSRLM8Gp5_naWXXtdDtXf-zUwgpKa-2lI&type=doc&title=Discounts" class="button">📄 Discounts - A Key Guide</a>
+                <a href="viewer.html?id=12p2LBjenpyBg9uWGzGPjGtrNr6b3n2mcvosG-ojUYaY&type=presentation&title=How to Use TextBlaze" class="button">📊 How to Use TextBlaze - Essential Tool</a>
+            </div>
+
+            <h2>📚 Articles & Guides</h2>
             <div class="button-grid">
                 <a href="viewer.html?id=1GtO-5cJVi6PSRLM8Gp5_naWXXtdDtXf-zUwgpKa-2lI&type=doc&title=Discounts" class="button">📄 Discounts</a>
                 <a href="viewer.html?id=1l0OM-EVw6gAZ5hWsJ7xBE3KZT4zkFqqkLMCSYT8WMm4&type=doc&title=Sizing" class="button">📄 Sizing</a>
@@ -29,12 +39,13 @@
                 <a href="viewer.html?id=1pCAJJll3RJMy_8sLxQmkkHskhLoXCq1la4pGjgvAb3g&type=doc&title=Escalations" class="button">📄 Escalations</a>
             </div>
 
-            <h2>Presentations & Tools</h2>
+            <h2>🛠️ Presentations & Tools</h2>
             <div class="button-grid">
                 <a href="viewer.html?id=12p2LBjenpyBg9uWGzGPjGtrNr6b3n2mcvosG-ojUYaY&type=presentation&title=How to Use TextBlaze" class="button">📊 How to Use TextBlaze</a>
                 <a href="viewer.html?id=1FVz0YM_TlWYi1xweqHoXwoGees_WPWHMU3Hk_gLH2ZI&type=presentation&title=When to Request Templates" class="button">📊 When to Request Templates</a>
             </div>
         </main>
+
     </div>
 
 </body>
