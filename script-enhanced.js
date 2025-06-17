@@ -57,10 +57,9 @@ window.onload = function() {
                 searchResultsContainer = document.createElement('div');
                 searchResultsContainer.id = 'searchResultsContainer';
                 searchResultsContainer.style.marginTop = '20px';
-                mainElement.insertBefore(searchResultsContainer, mainElement.firstChild);
-            }
+                mainElement.insertBefore(searchResultsContainer, mainElement.firstChild);            }
             searchResultsContainer.style.display = 'none';
-
+            
             searchInput.addEventListener('input', function() {
                 console.log("Search input changed:", searchInput.value);
                 const searchTerm = searchInput.value.toLowerCase().trim();
@@ -87,12 +86,15 @@ window.onload = function() {
                         overallResultsFound = true;
                         displayEnhancedSearchResults(searchResults, searchResultsContainer, searchTerm);
                         hideAllContent(mainElement);
+                        searchResultsContainer.style.display = 'block';
                     }
                 }
 
-                // Fallback to basic title search if no enhanced results
+                // If no enhanced results, try basic search
                 if (!overallResultsFound) {
+                    console.log("No enhanced results, trying basic search...");
                     overallResultsFound = performBasicSearch(mainElement, searchTerm);
+                    searchResultsContainer.style.display = 'none';
                 }
 
                 // Show/hide no results message
