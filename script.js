@@ -49,7 +49,7 @@ window.onload = function() {
             buttonGrids.forEach(grid => {
                 grid.style.display = visible ? '' : 'none';
             });
-        }        // Render search results as clickable cards/buttons
+        }        // Render search results as clickable cards/buttons - ONLY showing titles
         function renderSearchResults(results, searchTerm) {
             // Ensure we have the container
             const searchResultsContainer = document.getElementById('searchResultsContainer');
@@ -83,8 +83,7 @@ window.onload = function() {
             
             results.forEach(res => {
                 const doc = res.document;
-                
-                // Build the link
+                  // Build the link with ONLY the title (no description)
                 const link = document.createElement('a');
                 link.className = 'button';
                 link.href = `viewer.html?id=${doc.id}&type=${doc.type}&title=${encodeURIComponent(doc.title)}`;
@@ -92,41 +91,13 @@ window.onload = function() {
                 // Create title element
                 const titleElem = document.createElement('b');
                 titleElem.textContent = doc.title;
-                
-                // Create icon and append title
+                  // Create icon and append title only
                 link.innerHTML = `${doc.type === 'presentation' ? '📊' : '📄'} `;
                 link.appendChild(titleElem);
                 
-                // Add description if available
-                if (doc.description) {
-                    const descSpan = document.createElement('span');
-                    descSpan.textContent = doc.description;
-                    descSpan.style.fontSize = '0.98em';
-                    descSpan.style.color = '#6b7280';
-                    descSpan.style.fontWeight = '400';
-                    
-                    const lineBreak = document.createElement('br');
-                    link.appendChild(lineBreak);
-                    link.appendChild(descSpan);
-                }
-                
-                // Optionally, show excerpt with highlight
-                if (res.matches && res.matches.length > 0) {
-                    const excerpt = res.matches.find(m => m.startsWith('Content:'));
-                    if (excerpt) {
-                        // Highlight search term
-                        const safeExcerpt = excerpt.replace(/Content: /, '')
-                            .replace(new RegExp(searchTerm, 'gi'), match => 
-                                `<mark>${match}</mark>`);
-                                
-                        const excerptDiv = document.createElement('div');
-                        excerptDiv.style.fontSize = '0.95em';
-                        excerptDiv.style.color = '#7b8494';
-                        excerptDiv.style.marginTop = '6px';
-                        excerptDiv.innerHTML = safeExcerpt;
-                        link.appendChild(excerptDiv);
-                    }
-                }
+                // Force style to ensure only title shows (no description)
+                link.style.height = 'auto';
+                link.style.minHeight = '30px';
                 
                 grid.appendChild(link);
             });

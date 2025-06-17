@@ -220,6 +220,26 @@ main h2::before { /* Adding space for icons if they were to be added via CSS */
     margin-top: 25px;
 }
 
+/* Specific styling for search result buttons */
+#searchResultsContainer .button {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding: 15px 20px;
+    height: auto;
+    min-height: 30px; /* Set a min-height to prevent expansion */
+    white-space: nowrap; /* Keep title on one line */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis if title is too long */
+}
+
+#searchResultsContainer .button b {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+}
+
 .button {
     background-color: #fff; /* Cleaner button background */
     color: #2d3748; /* Darker text for better contrast */
