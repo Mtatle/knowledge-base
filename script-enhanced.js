@@ -99,16 +99,7 @@ window.onload = function() {
 
                 // Show/hide no results message
                 if (!overallResultsFound) {
-                    noResultsMessage.innerHTML = `
-                        <div style="padding: 20px; text-align: center;">
-                            <p style="font-size: 1.2rem; color: #4a5568; margin-bottom: 10px;">
-                                No articles found matching "<strong>${searchInput.value}</strong>"
-                            </p>
-                            <p style="font-size: 0.9rem; color: #718096;">
-                                Try searching for terms like "discount", "sizing", "template", or "escalation"
-                            </p>
-                        </div>
-                    `;
+                    noResultsMessage.textContent = `No results found for "${searchTerm}"`;
                     noResultsMessage.style.display = 'block';
                 } else {
                     noResultsMessage.style.display = 'none';
@@ -138,10 +129,6 @@ window.onload = function() {
         function hideAllContent(mainElement) {
             const buttonGrids = mainElement.querySelectorAll('.button-grid');
             buttonGrids.forEach(grid => {
-                const sectionTitle = grid.previousElementSibling;
-                if (sectionTitle && sectionTitle.tagName === 'H2') {
-                    sectionTitle.style.display = 'none';
-                }
                 grid.style.display = 'none';
             });
         }
@@ -183,57 +170,45 @@ window.onload = function() {
             return resultsFound;
         }
 
-        function displayEnhancedSearchResults(searchResults, container, searchTerm) {
-            container.style.display = 'block';
-            
-            const resultsHeader = document.createElement('div');
-            resultsHeader.innerHTML = `
-                <h3 style="color: #2d3748; font-size: 1.3rem; margin-bottom: 15px; font-family: 'Montserrat', sans-serif;">
-                    🔍 Search Results for "${searchTerm}" (${searchResults.length} found)
-                </h3>
-            `;
-            container.appendChild(resultsHeader);
-
-            const resultsGrid = document.createElement('div');
-            resultsGrid.className = 'button-grid';
-            resultsGrid.style.marginTop = '15px';
-
-            searchResults.forEach(result => {
-                const doc = result.document;
-                const resultButton = document.createElement('a');
-                resultButton.href = `viewer.html?id=${doc.id}&type=${doc.type}&title=${encodeURIComponent(doc.title)}`;
-                resultButton.className = 'button search-result-button';
-                
-                // Highlight the search term in title
-                const highlightedTitle = highlightSearchTerm(doc.title, searchTerm);
-                const typeIcon = doc.type === 'doc' ? '📄' : '📊';
-                
-                // Show match details
-                const matchInfo = result.matches.slice(0, 2).join(' • ');
-                
-                resultButton.innerHTML = `
-                    <div style="width: 100%;">
-                        <div style="font-size: 1.1rem; margin-bottom: 5px;">
-                            ${typeIcon} ${highlightedTitle}
-                        </div>
-                        <div style="font-size: 0.8rem; color: #718096; line-height: 1.3;">
-                            ${matchInfo}
-                        </div>
-                        <div style="font-size: 0.7rem; color: #a0aec0; margin-top: 5px;">
-                            Score: ${result.score} | ${doc.type === 'doc' ? 'Document' : 'Presentation'}
-                        </div>
-                    </div>
-                `;
-                
-                resultsGrid.appendChild(resultButton);
+        function displayEnhancedSearchResults(results, container, searchTerm) {
+            container.innerHTML = '';
+            if (results.length === 0) {
+                container.style.display = 'block';
+                container.innerHTML = `<p style="text-align:center;font-size:1.1rem;color:#4a5568;font-family:Montserrat,sans-serif;">No results found for "${searchTerm}"</p>`;
+                return;
+            }
+            // Title for results
+            container.innerHTML = `<div style="text-align:center;margin-bottom:18px;font-size:1.15rem;font-weight:600;color:#5a67d8;font-family:Montserrat,sans-serif;">🔍 Search Results for "${searchTerm}" (${results.length} found)</div>`;
+            // Results grid
+            const grid = document.createElement('div');
+            grid.className = 'button-grid';
+            results.forEach(res => {
+                const doc = res.document;
+                // Build the link
+                const link = document.createElement('a');
+                link.className = 'button';
+                link.href = `viewer.html?id=${doc.id}&type=${doc.type}&title=${encodeURIComponent(doc.title)}`;
+                link.style.display = 'block';
+                link.style.marginBottom = '18px';
+                link.innerHTML = `${doc.type === 'presentation' ? '📊' : '📄'} <b>${doc.title}</b><br><span style='font-size:0.98em;color:#6b7280;font-weight:400;'>${doc.description || ''}</span>`;
+                // Optionally, show excerpt with highlight
+                if (res.matches && res.matches.length > 0) {
+                    const excerpt = res.matches.find(m => m.startsWith('Content:'));
+                    if (excerpt) {
+                        // Highlight search term
+                        const safeExcerpt = excerpt.replace(/Content: /, '').replace(new RegExp(searchTerm, 'gi'), match => `<mark style='background:#f6e05e;color:#2d3748;border-radius:3px;'>${match}</mark>`);
+                        const excerptDiv = document.createElement('div');
+                        excerptDiv.style.fontSize = '0.95em';
+                        excerptDiv.style.color = '#7b8494';
+                        excerptDiv.style.marginTop = '6px';
+                        excerptDiv.innerHTML = safeExcerpt;
+                        link.appendChild(excerptDiv);
+                    }
+                }
+                grid.appendChild(link);
             });
-
-            container.appendChild(resultsGrid);
-        }
-
-        function highlightSearchTerm(text, searchTerm) {
-            const regex = new RegExp(`(${searchTerm})`, 'gi');
-            return text.replace(regex, '<mark style="background-color: #ffd700; padding: 1px 2px; border-radius: 2px;">$1</mark>');
+            container.appendChild(grid);
+            container.style.display = 'block';
         }
     }
 };

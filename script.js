@@ -29,98 +29,87 @@ window.onload = function() {
         if (iframeElement) { // Check if iframeElement is not null
             iframeElement.src = embedUrl;
         }    } else { // Code for index.html, as docId will be null
-        console.log("Setting up search functionality...");
+        // --- Modern live search logic ---
         const searchInput = document.getElementById('searchInput');
         const mainElement = document.querySelector('main');
 
-        if (searchInput && mainElement) {
-            console.log("Search elements found, adding event listener...");
-            
-            // Create no results message
-            let noResultsMessage = document.getElementById('noResultsMessage');
-            if (!noResultsMessage) {
-                noResultsMessage = document.createElement('p');
-                noResultsMessage.id = 'noResultsMessage';
-                noResultsMessage.style.textAlign = 'center';
-                noResultsMessage.style.marginTop = '20px';
-                noResultsMessage.style.fontSize = '1.1rem';
-                noResultsMessage.style.color = '#4a5568';
-                noResultsMessage.style.fontFamily = 'Montserrat, sans-serif';
-                mainElement.insertBefore(noResultsMessage, mainElement.firstChild);
+        // Create a container for dynamic search results
+        let searchResultsContainer = document.getElementById('searchResultsContainer');
+        if (!searchResultsContainer) {
+            searchResultsContainer = document.createElement('div');
+            searchResultsContainer.id = 'searchResultsContainer';
+            searchResultsContainer.style.marginTop = '30px';
+            mainElement.insertBefore(searchResultsContainer, mainElement.firstChild);
+        }
+        searchResultsContainer.innerHTML = '';
+        searchResultsContainer.style.display = 'none';
+
+        // Hide/show all button grids
+        function setButtonGridsVisible(visible) {
+            const buttonGrids = mainElement.querySelectorAll('.button-grid');
+            buttonGrids.forEach(grid => {
+                grid.style.display = visible ? '' : 'none';
+            });
+        }
+
+        // Render search results as clickable cards/buttons
+        function renderSearchResults(results, searchTerm) {
+            searchResultsContainer.innerHTML = '';
+            if (results.length === 0) {
+                searchResultsContainer.style.display = 'block';
+                searchResultsContainer.innerHTML = `<p style="text-align:center;font-size:1.1rem;color:#4a5568;font-family:Montserrat,sans-serif;">No results found for "${searchTerm}"</p>`;
+                return;
             }
-            noResultsMessage.style.display = 'none';
-
-            searchInput.addEventListener('input', function() {
-                console.log("Search input changed:", searchInput.value);
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                let overallResultsFound = false;
-
-                const buttonGrids = mainElement.querySelectorAll('.button-grid');
-                console.log("Found", buttonGrids.length, "button grids");
-
-                buttonGrids.forEach(grid => {
-                    let resultsInThisGrid = false;
-                    const buttonsInGrid = grid.querySelectorAll('.button');
-                      buttonsInGrid.forEach(button => {
-                        const buttonText = button.textContent.toLowerCase();
-                        
-                        // Extract document ID from the button's href
-                        const href = button.getAttribute('href');
-                        const docIdMatch = href.match(/id=([^&]+)/);
-                        const docId = docIdMatch ? docIdMatch[1] : null;
-                        
-                        // Search in both button text and document content
-                        let isMatch = false;
-                        
-                        // Search in button text
-                        if (buttonText.includes(searchTerm)) {
-                            isMatch = true;
-                        }
-                        
-                        // Search in document content if available
-                        if (!isMatch && docId && documentContent[docId]) {
-                            const doc = documentContent[docId];
-                            const searchableText = (doc.title + ' ' + doc.content + ' ' + doc.keywords.join(' ')).toLowerCase();
-                            if (searchableText.includes(searchTerm)) {
-                                isMatch = true;
-                            }
-                        }
-                        
-                        console.log("Checking button:", buttonText, "Document ID:", docId, "Match:", isMatch);
-                        
-                        if (searchTerm === '' || isMatch) {
-                            button.style.display = 'flex';
-                            resultsInThisGrid = true;
-                            overallResultsFound = true;
-                        } else {
-                            button.style.display = 'none';
-                        }
-                    });
-
-                    // Show/hide section titles and grids
-                    const sectionTitle = grid.previousElementSibling;
-                    if (resultsInThisGrid || searchTerm === '') {
-                        if (sectionTitle && sectionTitle.tagName === 'H2') {
-                            sectionTitle.style.display = 'block';
-                        }
-                        grid.style.display = 'grid';
-                    } else {
-                        if (sectionTitle && sectionTitle.tagName === 'H2') {
-                            sectionTitle.style.display = 'none';
-                        }
-                        grid.style.display = 'none';
+            // Title for results
+            searchResultsContainer.innerHTML = `<div style="text-align:center;margin-bottom:18px;font-size:1.15rem;font-weight:600;color:#5a67d8;font-family:Montserrat,sans-serif;">🔍 Search Results for "${searchTerm}" (${results.length} found)</div>`;
+            // Results grid
+            const grid = document.createElement('div');
+            grid.className = 'button-grid';
+            results.forEach(res => {
+                const doc = res.document;
+                // Build the link
+                const link = document.createElement('a');
+                link.className = 'button';
+                link.href = `viewer.html?id=${doc.id}&type=${doc.type}&title=${encodeURIComponent(doc.title)}`;
+                link.style.display = 'block';
+                link.style.marginBottom = '18px';
+                link.innerHTML = `${doc.type === 'presentation' ? '📊' : '📄'} <b>${doc.title}</b><br><span style='font-size:0.98em;color:#6b7280;font-weight:400;'>${doc.description || ''}</span>`;
+                // Optionally, show excerpt with highlight
+                if (res.matches && res.matches.length > 0) {
+                    const excerpt = res.matches.find(m => m.startsWith('Content:'));
+                    if (excerpt) {
+                        // Highlight search term
+                        const safeExcerpt = excerpt.replace(/Content: /, '').replace(new RegExp(searchTerm, 'gi'), match => `<mark style='background:#f6e05e;color:#2d3748;border-radius:3px;'>${match}</mark>`);
+                        const excerptDiv = document.createElement('div');
+                        excerptDiv.style.fontSize = '0.95em';
+                        excerptDiv.style.color = '#7b8494';
+                        excerptDiv.style.marginTop = '6px';
+                        excerptDiv.innerHTML = safeExcerpt;
+                        link.appendChild(excerptDiv);
                     }
-                });
+                }
+                grid.appendChild(link);
+            });
+            searchResultsContainer.appendChild(grid);
+            searchResultsContainer.style.display = 'block';
+        }
 
-                // Show/hide no results message
-                if (searchTerm !== '' && !overallResultsFound) {                    noResultsMessage.textContent = `No articles found matching "${searchInput.value}"`;
-                    noResultsMessage.style.display = 'block';
-                } else {
-                    noResultsMessage.style.display = 'none';
+        // --- Live search event ---
+        if (searchInput && mainElement) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm.length === 0) {
+                    searchResultsContainer.style.display = 'none';
+                    setButtonGridsVisible(true);
+                    return;
+                }
+                // Use registry for full-text search
+                if (window.documentRegistry && typeof window.documentRegistry.searchDocuments === 'function') {
+                    const results = window.documentRegistry.searchDocuments(searchTerm);
+                    setButtonGridsVisible(false);
+                    renderSearchResults(results, searchTerm);
                 }
             });
-        } else {
-            console.log("Search elements not found!");
         }
     }
 };
