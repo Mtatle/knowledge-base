@@ -361,3 +361,32 @@ main h2::before { /* Adding space for icons if they were to be added via CSS */
         opacity: 0;
     }
 }
+
+/* Search Results Styles */
+#searchResultsContainer {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#searchResultsContainer mark {
+    background-color: #f6e05e;
+    color: #2d3748;
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+#searchResultsContainer .button-grid {
+    margin-top: 15px;
+}

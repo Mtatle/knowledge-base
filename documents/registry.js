@@ -2,19 +2,18 @@
 class DocumentRegistry {
     constructor() {
         this.documents = new Map();
-        this.loadDocuments();
-    }
-
-    loadDocuments() {
-        // This will be populated when individual document files are loaded
-        this.documents = new Map();
-    }
-
-    registerDocument(content) {
+        console.log('DocumentRegistry initialized');
+    }    registerDocument(content) {
+        if (!content || !content.id || !content.title) {
+            console.error('Invalid document content passed to registry:', content);
+            return;
+        }
         this.documents.set(content.id, content);
-    }
-
-    searchDocuments(searchTerm) {
+        console.log(`Document registered: ${content.title}`);
+    }    searchDocuments(searchTerm) {
+        console.log(`Registry searching for: "${searchTerm}"`);
+        console.log(`Registry has ${this.documents.size} documents registered`);
+        
         const results = [];
         const lowerSearchTerm = searchTerm.toLowerCase().trim();
 
@@ -27,7 +26,7 @@ class DocumentRegistry {
             let matchDetails = [];
 
             // Search in title (higher weight)
-            if (doc.title.toLowerCase().includes(lowerSearchTerm)) {
+            if (doc.title && doc.title.toLowerCase().includes(lowerSearchTerm)) {
                 score += 10;
                 matchDetails.push(`Title: ${doc.title}`);
             }
@@ -39,7 +38,7 @@ class DocumentRegistry {
             }
 
             // Search in tags (medium weight)
-            if (doc.tags) {
+            if (doc.tags && Array.isArray(doc.tags)) {
                 doc.tags.forEach(tag => {
                     if (tag.toLowerCase().includes(lowerSearchTerm)) {
                         score += 3;
@@ -49,7 +48,7 @@ class DocumentRegistry {
             }
 
             // Search in content (lower weight but important)
-            if (doc.content && doc.content.toLowerCase().includes(lowerSearchTerm)) {
+            if (doc.content && typeof doc.content === 'string' && doc.content.toLowerCase().includes(lowerSearchTerm)) {
                 score += 2;
                 
                 // Find excerpt around the match
@@ -87,3 +86,10 @@ class DocumentRegistry {
 
 // Create global instance
 window.documentRegistry = new DocumentRegistry();
+
+// Add a loaded event for other scripts to know when registry is ready
+window.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM content loaded - Registry ready');
+    // Dispatch a custom event to notify that registry is ready
+    window.dispatchEvent(new CustomEvent('registryReady'));
+});

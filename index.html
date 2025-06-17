@@ -27,15 +27,17 @@
             <p>Your go-to resource for guides, presentations, and best practices.</p>
             
             <!-- Modern search with icon -->
-            <div class="search-container">
-                <div class="search-wrapper">
-                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>                    <input type="text" id="searchInput" placeholder="Search articles...">
-                </div>
+            <div class="search-container">            <div class="search-wrapper">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search articles...">
             </div>
-
+        </div>
+        </header>
+        
         <main>
+            <div id="searchResultsContainer" style="display: none;"></div>
             <h2>🌟 Featured Articles</h2>
             <div class="button-grid">
                 <a href="viewer.html?id=1GtO-5cJVi6PSRLM8Gp5_naWXXtdDtXf-zUwgpKa-2lI&type=doc&title=Discounts" class="button">📄 Discounts</a>
@@ -69,8 +71,7 @@
     <script src="documents/closing-conversation.js"></script>
     <script src="documents/escalations.js"></script>
     <script src="documents/textblaze.js"></script>
-    <script src="documents/template-requests.js"></script>
-      <!-- Main script -->
-    <script src="script-enhanced.js"></script>
+    <script src="documents/template-requests.js"></script>      <!-- Main script -->
+    <script src="script.js"></script>
 </body>
 </html>

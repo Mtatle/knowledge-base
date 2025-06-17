@@ -45,14 +45,19 @@ Important notes:
 // Export for use in main search
 window.discountsContent = discountsContent;
 
-// Register with document registry when available
+// Register with document registry
+function registerDocument() {
+    if (window.documentRegistry) {
+        window.documentRegistry.registerDocument(discountsContent);
+    } else {
+        console.error('Document registry not available for Discounts');
+    }
+}
+
+// Register immediately if registry is available
 if (window.documentRegistry) {
-    window.documentRegistry.registerDocument(discountsContent);
+    registerDocument();
 } else {
-    // If registry not loaded yet, register when it becomes available
-    window.addEventListener('load', () => {
-        if (window.documentRegistry) {
-            window.documentRegistry.registerDocument(discountsContent);
-        }
-    });
+    // Wait for registry to be ready
+    window.addEventListener('registryReady', registerDocument);
 }
