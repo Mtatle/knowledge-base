@@ -61,12 +61,34 @@ window.onload = function() {
                 buttonGrids.forEach(grid => {
                     let resultsInThisGrid = false;
                     const buttonsInGrid = grid.querySelectorAll('.button');
-                    
-                    buttonsInGrid.forEach(button => {
+                      buttonsInGrid.forEach(button => {
                         const buttonText = button.textContent.toLowerCase();
-                        console.log("Checking button:", buttonText, "against search term:", searchTerm);
                         
-                        if (searchTerm === '' || buttonText.includes(searchTerm)) {
+                        // Extract document ID from the button's href
+                        const href = button.getAttribute('href');
+                        const docIdMatch = href.match(/id=([^&]+)/);
+                        const docId = docIdMatch ? docIdMatch[1] : null;
+                        
+                        // Search in both button text and document content
+                        let isMatch = false;
+                        
+                        // Search in button text
+                        if (buttonText.includes(searchTerm)) {
+                            isMatch = true;
+                        }
+                        
+                        // Search in document content if available
+                        if (!isMatch && docId && documentContent[docId]) {
+                            const doc = documentContent[docId];
+                            const searchableText = (doc.title + ' ' + doc.content + ' ' + doc.keywords.join(' ')).toLowerCase();
+                            if (searchableText.includes(searchTerm)) {
+                                isMatch = true;
+                            }
+                        }
+                        
+                        console.log("Checking button:", buttonText, "Document ID:", docId, "Match:", isMatch);
+                        
+                        if (searchTerm === '' || isMatch) {
                             button.style.display = 'flex';
                             resultsInThisGrid = true;
                             overallResultsFound = true;

@@ -31,8 +31,23 @@
                 <div class="search-wrapper">
                     <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <input type="text" id="searchInput" placeholder="Search articles...">
+                    </svg>                    <input type="text" id="searchInput" placeholder="Search articles...">
+                </div>
+            </div>
+            
+            <!-- Stats/features -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">8+</div>
+                    <div class="stat-label">Articles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Quality</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Access</div>
                 </div>
             </div>
         </header>
@@ -40,8 +55,8 @@
         <main>
             <h2>🌟 Featured Articles</h2>
             <div class="button-grid">
-                <a href="viewer.html?id=1GtO-5cJVi6PSRLM8Gp5_naWXXtdDtXf-zUwgpKa-2lI&type=doc&title=Discounts" class="button">📄 Discounts - A Key Guide</a>
-                <a href="viewer.html?id=12p2LBjenpyBg9uWGzGPjGtrNr6b3n2mcvosG-ojUYaY&type=presentation&title=How to Use TextBlaze" class="button">📊 How to Use TextBlaze - Essential Tool</a>
+                <a href="viewer.html?id=1GtO-5cJVi6PSRLM8Gp5_naWXXtdDtXf-zUwgpKa-2lI&type=doc&title=Discounts" class="button">📄 Discounts</a>
+                <a href="viewer.html?id=12p2LBjenpyBg9uWGzGPjGtrNr6b3n2mcvosG-ojUYaY&type=presentation&title=How to Use TextBlaze" class="button">📊 How to Use TextBlaze</a>
             </div>
 
             <h2>📚 Articles & Guides</h2>
@@ -58,9 +73,21 @@
             <div class="button-grid">
                 <a href="viewer.html?id=12p2LBjenpyBg9uWGzGPjGtrNr6b3n2mcvosG-ojUYaY&type=presentation&title=How to Use TextBlaze" class="button">📊 How to Use TextBlaze</a>
                 <a href="viewer.html?id=1FVz0YM_TlWYi1xweqHoXwoGees_WPWHMU3Hk_gLH2ZI&type=presentation&title=When to Request Templates" class="button">📊 When to Request Templates</a>
-            </div>
-        </main>    </div>
+            </div>        </main>    </div>
 
-    <script src="script.js"></script>
+    <!-- Load document registry first -->
+    <script src="documents/registry.js"></script>
+    
+    <!-- Load all document content files -->
+    <script src="documents/discounts.js"></script>
+    <script src="documents/sizing.js"></script>
+    <script src="documents/brand-tone.js"></script>
+    <script src="documents/double-texting.js"></script>
+    <script src="documents/closing-conversation.js"></script>
+    <script src="documents/escalations.js"></script>
+    <script src="documents/textblaze.js"></script>
+    <script src="documents/template-requests.js"></script>
+      <!-- Main script -->
+    <script src="script-enhanced.js"></script>
 </body>
 </html>
