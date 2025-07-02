@@ -28,7 +28,9 @@ window.onload = function() {
         // Set the source for the iframe
         if (iframeElement) { // Check if iframeElement is not null
             iframeElement.src = embedUrl;
-        }    } else { // Code for index.html, as docId will be null        // --- Modern live search logic ---
+        }    
+    } else { // Code for index.html, as docId will be null        
+        // --- Modern live search logic ---
         const searchInput = document.getElementById('searchInput');
         const mainElement = document.querySelector('main');
         
@@ -43,13 +45,28 @@ window.onload = function() {
             console.error("Search results container not found in the DOM");
         }
 
-        // Hide/show all button grids
-        function setButtonGridsVisible(visible) {
-            const buttonGrids = mainElement.querySelectorAll('.button-grid');
-            buttonGrids.forEach(grid => {
-                grid.style.display = visible ? '' : 'none';
+        // Hide/show all folder containers and folders
+        function setContentVisible(visible) {
+            const folderContainers = mainElement.querySelectorAll('.folder-container');
+            const categoryTitles = mainElement.querySelectorAll('h2');
+            const fileButtons = mainElement.querySelectorAll('.file-button');
+            
+            folderContainers.forEach(container => {
+                container.style.display = visible ? 'block' : 'none';
             });
-        }        // Render search results as clickable cards/buttons - ONLY showing titles
+            
+            categoryTitles.forEach(title => {
+                title.style.display = visible ? 'flex' : 'none';
+            });
+            
+            fileButtons.forEach(btn => {
+                if (!btn.closest('.folder-content') || visible) {
+                    btn.style.display = visible ? 'flex' : 'none';
+                }
+            });
+        }        
+        
+        // Render search results as clickable cards/buttons - ONLY showing titles
         function renderSearchResults(results, searchTerm) {
             // Ensure we have the container
             const searchResultsContainer = document.getElementById('searchResultsContainer');
@@ -74,7 +91,7 @@ window.onload = function() {
             titleDiv.style.marginBottom = '18px';
             titleDiv.style.fontSize = '1.15rem';
             titleDiv.style.fontWeight = '600';
-            titleDiv.style.color = '#5a67d8';
+            titleDiv.style.color = '#ffc400';
             searchResultsContainer.appendChild(titleDiv);
             
             // Results grid
@@ -94,6 +111,36 @@ window.onload = function() {
                   // Create icon and append title only
                 link.innerHTML = `${doc.type === 'presentation' ? '📊' : '📄'} `;
                 link.appendChild(titleElem);
+                
+                // Add location information (category/folder/subfolder) if available
+                if (doc.category || doc.folder) {
+                    const locationElem = document.createElement('small');
+                    let locationText = '';
+                    
+                    if (doc.category && window.documentRegistry.categories[doc.category]) {
+                        locationText += window.documentRegistry.categories[doc.category].title;
+                    }
+                    
+                    if (doc.folder && doc.category && 
+                        window.documentRegistry.categories[doc.category].folders[doc.folder]) {
+                        locationText += ' > ' + window.documentRegistry.categories[doc.category].folders[doc.folder].title;
+                    }
+                    
+                    if (doc.subfolder && doc.folder && doc.category && 
+                        window.documentRegistry.categories[doc.category].folders[doc.folder].subfolders && 
+                        window.documentRegistry.categories[doc.category].folders[doc.folder].subfolders[doc.subfolder]) {
+                        locationText += ' > ' + window.documentRegistry.categories[doc.category].folders[doc.folder].subfolders[doc.subfolder].title;
+                    }
+                    
+                    if (locationText) {
+                        locationElem.textContent = locationText;
+                        locationElem.style.display = 'block';
+                        locationElem.style.fontSize = '0.8rem';
+                        locationElem.style.color = '#718096';
+                        locationElem.style.marginTop = '5px';
+                        link.appendChild(locationElem);
+                    }
+                }
                 
                 // Force style to ensure only title shows (no description)
                 link.style.height = 'auto';
@@ -115,19 +162,28 @@ window.onload = function() {
                 const searchTerm = searchInput.value.trim();
                 if (searchTerm.length === 0) {
                     searchResultsContainer.style.display = 'none';
-                    setButtonGridsVisible(true);
+                    setContentVisible(true);
                     return;
-                }                // Use registry for full-text search
+                }                
+                
+                // Use registry for full-text search
                 if (window.documentRegistry && typeof window.documentRegistry.searchDocuments === 'function') {
                     console.log(`Searching for: "${searchTerm}"`);
                     const results = window.documentRegistry.searchDocuments(searchTerm);
                     console.log(`Search returned ${results.length} results:`, results);
-                    setButtonGridsVisible(false);
+                    setContentVisible(false);
                     renderSearchResults(results, searchTerm);
                 } else {
                     console.error('Document registry not found or searchDocuments method missing');
                 }
             });
         }
+
+        // Ensure all folder content is hidden on load
+        document.querySelectorAll('.folder-content').forEach(content => {
+            if (!content.classList.contains('active')) {
+                content.style.display = 'none';
+            }
+        });
     }
 };

@@ -2,78 +2,81 @@
 class DocumentRegistry {
     constructor() {
         this.documents = new Map();
-        this.categories = {
-            admin: {
-                title: "Admin",
-                folders: {
-                    system: { title: "System", documents: [] },
-                    organizationStructure: { title: "Organization Structure", documents: [] },
-                    onboarding: { title: "Onboarding", documents: [] },
-                    kpis: { title: "KPIs", documents: [] },
-                    codeOfConduct: { title: "Code of Conduct", documents: [] },
-                    agentBehaviors: { title: "Agent Behaviors", documents: [] }
-                },
-                documents: [] // For documents directly under admin
-            },
-            content: {
-                title: "Content",
-                folders: {
-                    navigation: { title: "Navigation", documents: [] },
-                    messageQuality: { title: "Message Quality", documents: [] },
-                    intro: { title: "Intro", documents: [] },
-                    eventQuality: { title: "Event Quality", documents: [] },
-                    conversationTopics: { 
-                        title: "Conversation Topics", 
-                        subfolders: {
-                            prePurchase: { title: "Pre-Purchase", documents: [] },
-                            postPurchase: { title: "Post-Purchase", documents: [] },
-                            general: { title: "General", documents: [] }
-                        },
-                        documents: []
-                    },
-                    conciergeAgent101: { title: "Concierge Agent 101", documents: [] },
-                    compliance: { title: "Compliance", documents: [] }
-                },
-                documents: [] // For documents directly under content
-            }
-        };
-        console.log('DocumentRegistry initialized with categories and folders');
+        this.folders = new Map();
+        console.log('DocumentRegistry initialized');
     }
-
-    registerDocument(content, category = null, folder = null, subfolder = null) {
+    
+    registerDocument(content, folder = null) {
         if (!content || !content.id || !content.title) {
             console.error('Invalid document content passed to registry:', content);
             return;
         }
         
-        // Store in the flat map for search
+        // Store document
         this.documents.set(content.id, content);
         
-        // Add metadata for category/folder
-        content.category = category;
-        content.folder = folder;
-        content.subfolder = subfolder;
-        
-        // Add to category structure if provided
-        if (category && this.categories[category]) {
-            if (folder && this.categories[category].folders[folder]) {
-                if (subfolder && this.categories[category].folders[folder].subfolders && 
-                    this.categories[category].folders[folder].subfolders[subfolder]) {
-                    // Add to subfolder
-                    this.categories[category].folders[folder].subfolders[subfolder].documents.push(content);
-                } else if (!subfolder) {
-                    // Add to folder
-                    this.categories[category].folders[folder].documents.push(content);
-                }
-            } else if (!folder) {
-                // Add directly to category
-                this.categories[category].documents.push(content);
+        // Add to folder if specified
+        if (folder) {
+            if (!this.folders.has(folder)) {
+                this.folders.set(folder, []);
             }
+            this.folders.get(folder).push(content.id);
         }
         
         console.log(`Document registered: ${content.title}`);
     }
-
+    
+    registerFolder(folderName, parentFolder = null) {
+        if (!this.folders.has(folderName)) {
+            this.folders.set(folderName, []);
+        }
+        
+        // Track folder hierarchy
+        if (parentFolder) {
+            if (!this.folders.has(parentFolder)) {
+                this.folders.set(parentFolder, []);
+            }
+            
+            // Mark this as a subfolder
+            if (!this.folders.get(parentFolder).includes(`folder:${folderName}`)) {
+                this.folders.get(parentFolder).push(`folder:${folderName}`);
+            }
+        }
+    }
+    
+    getFolderContents(folderName) {
+        if (!this.folders.has(folderName)) {
+            return [];
+        }
+        
+        const contents = [];
+        const folderItems = this.folders.get(folderName);
+        
+        for (const item of folderItems) {
+            if (typeof item === 'string') {
+                if (item.startsWith('folder:')) {
+                    // This is a subfolder
+                    const subfolderName = item.substring(7);
+                    contents.push({
+                        type: 'folder',
+                        name: subfolderName
+                    });
+                } else {
+                    // This is a document ID
+                    const doc = this.documents.get(item);
+                    if (doc) {
+                        contents.push({
+                            type: 'document',
+                            document: doc
+                        });
+                    }
+                }
+            }
+        }
+        
+        return contents;
+    }
+    
     searchDocuments(searchTerm) {
         console.log(`Registry searching for: "${searchTerm}"`);
         console.log(`Registry has ${this.documents.size} documents registered`);
@@ -146,10 +149,32 @@ class DocumentRegistry {
     getAllDocuments() {
         return Array.from(this.documents.values());
     }
+    
+    getAllFolders() {
+        return Array.from(this.folders.keys());
+    }
 }
 
 // Create global instance
 window.documentRegistry = new DocumentRegistry();
+
+// Set up main category folders
+window.documentRegistry.registerFolder('Admin');
+window.documentRegistry.registerFolder('Content');
+
+// Set up Content subfolders
+window.documentRegistry.registerFolder('Navigation', 'Content');
+window.documentRegistry.registerFolder('Message Quality', 'Content');
+window.documentRegistry.registerFolder('Intro', 'Content');
+window.documentRegistry.registerFolder('Event Quality', 'Content');
+window.documentRegistry.registerFolder('Conversation Topics', 'Content');
+window.documentRegistry.registerFolder('Concierge Agent 101', 'Content');
+window.documentRegistry.registerFolder('Compliance', 'Content');
+
+// Set up Conversation Topics subfolders
+window.documentRegistry.registerFolder('Pre-Purchase', 'Conversation Topics');
+window.documentRegistry.registerFolder('Post-Purchase', 'Conversation Topics');
+window.documentRegistry.registerFolder('General', 'Conversation Topics');
 
 // Add a loaded event for other scripts to know when registry is ready
 window.addEventListener('DOMContentLoaded', () => {

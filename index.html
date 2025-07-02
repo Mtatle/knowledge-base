@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for folder icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -27,51 +29,415 @@
             <p>Your go-to resource for guides, presentations, and best practices.</p>
             
             <!-- Modern search with icon -->
-            <div class="search-container">            <div class="search-wrapper">
-                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <input type="text" id="searchInput" placeholder="Search articles...">
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search articles...">
+                </div>
             </div>
-        </div>
         </header>
         
         <main>
             <div id="searchResultsContainer" style="display: none;"></div>
-            <h2>🌟 Featured Articles</h2>
-            <div class="button-grid">
-                <a href="viewer.html?id=1GtO-5cJVi6PSRLM8Gp5_naWXXtdDtXf-zUwgpKa-2lI&type=doc&title=Discounts" class="button">📄 Discounts</a>
-                <a href="viewer.html?id=12p2LBjenpyBg9uWGzGPjGtrNr6b3n2mcvosG-ojUYaY&type=presentation&title=How to Use TextBlaze" class="button">📊 How to Use TextBlaze</a>
+            
+            <!-- Admin Category -->
+            <h2><i class="fas fa-shield-alt category-icon"></i> Admin</h2>
+            <div class="folder-container">
+                <!-- System Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>System</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <!-- Files will be added here -->
+                    </div>
+                </div>
+                
+                <!-- Organization Structure Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Organization Structure</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <!-- Files will be added here -->
+                    </div>
+                </div>
+                
+                <!-- Onboarding Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Onboarding</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <!-- Files will be added here -->
+                    </div>
+                </div>
+                
+                <!-- KPIs Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>KPIs</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <!-- Files will be added here -->
+                    </div>
+                </div>
+                
+                <!-- Code of Conduct Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Code of Conduct</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <!-- Files will be added here -->
+                    </div>
+                </div>
+                
+                <!-- Agent Behaviors Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Agent Behaviors</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <!-- Files will be added here -->
+                    </div>
+                </div>
+                
+                <!-- Agent Behavior and Performance File (Not a folder) -->
+                <a href="viewer.html?id=1olKxtscaFT702gQyDccRJ_m3MYW6iaqyW3Oo9rmzjJ4&type=presentation&title=Agent Behavior and Performance" class="file-button">
+                    <i class="fas fa-file-powerpoint"></i>
+                    <span>Agent Behavior and Performance</span>
+                </a>
             </div>
 
-            <h2>📚 Articles & Guides</h2>
-            <div class="button-grid">
-                <a href="viewer.html?id=1GtO-5cJVi6PSRLM8Gp5_naWXXtdDtXf-zUwgpKa-2lI&type=doc&title=Discounts" class="button">📄 Discounts</a>
-                <a href="viewer.html?id=1l0OM-EVw6gAZ5hWsJ7xBE3KZT4zkFqqkLMCSYT8WMm4&type=doc&title=Sizing" class="button">📄 Sizing</a>
-                <a href="viewer.html?id=1MjWL8lm8n3EmxOe7tArRzgfcZRM3ZxnS_GSQ8qp-xKE&type=doc&title=Brand Tone Preference" class="button">📄 Brand Tone Preference</a>
-                <a href="viewer.html?id=1FsLbW_3g9TNYjuYWUeCT8ASs_J46m8LqLJJd30fHuKc&type=doc&title=Double Texting" class="button">📄 Double Texting</a>
-                <a href="viewer.html?id=1vOLuTQoPIiMcUItAhBY28Ys8nsTKbqlBylCpEpjEtOo&type=doc&title=Closing a conversation" class="button">📄 Closing a conversation</a>
-                <a href="viewer.html?id=1pCAJJll3RJMy_8sLxQmkkHskhLoXCq1la4pGjgvAb3g&type=doc&title=Escalations" class="button">📄 Escalations</a>
+            <!-- Content Category -->
+            <h2><i class="fas fa-book category-icon"></i> Content</h2>
+            <div class="folder-container">
+                <!-- Navigation Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Navigation</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <a href="viewer.html?id=1p9aosWDa8VqobsdSQX6joNLiQ-f2FdCkSG-TgZb-p5Y&type=presentation&title=When to Request Templates" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>When to Request Templates</span>
+                        </a>
+                        <a href="viewer.html?id=1jl9L1jHTcPhcXRL_24P3EmGW5UQbkAXqdDT_fmYpIoU&type=presentation&title=Templates" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Templates</span>
+                        </a>
+                        <a href="viewer.html?id=1JY1rfqqoQmv154h5J2kD-6v-FPcwVVJKUXgL4OkVk_4&type=presentation&title=System Navigation" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>System Navigation</span>
+                        </a>
+                        <a href="viewer.html?id=1Qy3__PYg__gjNi7LMsw9bpnPj9MsK7Chwlg-dh4qa_k&type=presentation&title=Global Templates, Company Templates, and Notes" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Global Templates</span>
+                        </a>
+                        <a href="viewer.html?id=1Fjv7pwVx46H1tospQELVWe879PrEvfKu8118tJIfyQQ&type=doc&title=Templates and Shortcuts" class="file-button">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Templates Shortcuts</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Message Quality Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Message Quality</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <a href="viewer.html?id=1Dtq1IV2Fe_-nxPvdhEt2wdLwIny8OnUpWiCTyghQN7c&type=presentation&title=QA Approach" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>QA Approach</span>
+                        </a>
+                        <a href="viewer.html?id=1QpQbnZ_Fc0BGohBWTTw_VuFBTHbF4DspMPuXxR25rNg&type=doc&title=Personalization/Empathy" class="file-button">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Personalization and Empathy</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Intro Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Intro</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <a href="viewer.html?id=sub_verticals_id&type=presentation&title=Sub-Verticals" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Sub-Verticals</span>
+                        </a>
+                        <a href="viewer.html?id=opting_in_out_id&type=presentation&title=Opting In/Out" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Opting In/Out</span>
+                        </a>
+                        <a href="viewer.html?id=ecommerce_id&type=presentation&title=E-Commerce" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>E-Commerce</span>
+                        </a>
+                        <a href="viewer.html?id=concierge_subscribers_id&type=presentation&title=Concierge Subscribers" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Concierge Subscribers</span>
+                        </a>
+                        <a href="viewer.html?id=attentive_messages_id&type=presentation&title=Attentive Messages" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Attentive Messages</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Event Quality Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Event Quality</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <a href="viewer.html?id=1rARWcKeZKqv-h_y-uiYrUDyhhtf0Iy8SnqLr_audy_U&type=presentation&title=When to Blocklist, When to Unsubscribe, Closing a Conversation & Journeys" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Blocklist Unsubscribe</span>
+                        </a>
+                        <a href="viewer.html?id=1QJDaNbXtdb92SRwyJBn4FEW3lftD4Fx5wd2JcVFcquU&type=presentation&title=Events" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Events</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Conversation Topics Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Conversation Topics</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <!-- Pre-Purchase Subfolder -->
+                        <div class="subfolder">
+                            <div class="subfolder-header" onclick="toggleFolder(this)">
+                                <i class="fas fa-folder"></i>
+                                <span>Pre-Purchase</span>
+                                <i class="fas fa-chevron-down folder-arrow"></i>
+                            </div>
+                            <div class="folder-content">
+                                <a href="viewer.html?id=sizing_id&type=presentation&title=Sizing" class="file-button">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <span>Sizing</span>
+                                </a>
+                                <a href="viewer.html?id=payments_accounts_id&type=presentation&title=Payments & Accounts" class="file-button">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <span>Payments & Accounts</span>
+                                </a>
+                                <a href="viewer.html?id=order_status_id&type=presentation&title=Order Status" class="file-button">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <span>Order Status</span>
+                                </a>
+                                <a href="viewer.html?id=discounts_id&type=presentation&title=Discounts" class="file-button">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <span>Discounts</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Post-Purchase Subfolder -->
+                        <div class="subfolder">
+                            <div class="subfolder-header" onclick="toggleFolder(this)">
+                                <i class="fas fa-folder"></i>
+                                <span>Post-Purchase</span>
+                                <i class="fas fa-chevron-down folder-arrow"></i>
+                            </div>
+                            <div class="folder-content">
+                                <a href="viewer.html?id=missing_lost_items_id&type=presentation&title=Missing/Lost Items" class="file-button">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <span>Missing/Lost Items</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- General Subfolder -->
+                        <div class="subfolder">
+                            <div class="subfolder-header" onclick="toggleFolder(this)">
+                                <i class="fas fa-folder"></i>
+                                <span>General</span>
+                                <i class="fas fa-chevron-down folder-arrow"></i>
+                            </div>
+                            <div class="folder-content">
+                                <a href="viewer.html?id=shipping_options_id&type=presentation&title=Shipping Options" class="file-button">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <span>Shipping Options</span>
+                                </a>
+                                <a href="viewer.html?id=driving_to_purchase_id&type=presentation&title=Driving to Purchase" class="file-button">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <span>Driving to Purchase</span>
+                                </a>
+                                <a href="viewer.html?id=discounts_rewards_id&type=presentation&title=Discounts & Rewards" class="file-button">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <span>Discounts & Rewards</span>
+                                </a>
+                                <a href="viewer.html?id=rewards_credit_id&type=presentation&title=Rewards Credit" class="file-button">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <span>Rewards Credit</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Concierge Agent 101 Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Concierge Agent 101</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <a href="viewer.html?id=responding_to_customers_id&type=presentation&title=Responding to Customers" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Responding to Customers</span>
+                        </a>
+                        <a href="viewer.html?id=redirecting_to_cs_id&type=presentation&title=Redirecting to CS" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Redirecting to CS</span>
+                        </a>
+                        <a href="viewer.html?id=general_client_id&type=presentation&title=General Client" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>General Client</span>
+                        </a>
+                        <a href="viewer.html?id=escalations_id&type=presentation&title=Escalations" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Escalations</span>
+                        </a>
+                        <a href="viewer.html?id=technical_settings_id&type=presentation&title=Technical Settings" class="file-button">
+                            <i class="fas fa-file-powerpoint"></i>
+                            <span>Technical Settings</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Compliance Folder -->
+                <div class="folder">
+                    <div class="folder-header" onclick="toggleFolder(this)">
+                        <i class="fas fa-folder"></i>
+                        <span>Compliance</span>
+                        <i class="fas fa-chevron-down folder-arrow"></i>
+                    </div>
+                    <div class="folder-content">
+                        <!-- Files will be added here -->
+                    </div>
+                </div>
             </div>
-
-            <h2>🛠️ Presentations & Tools</h2>
-            <div class="button-grid">
-                <a href="viewer.html?id=12p2LBjenpyBg9uWGzGPjGtrNr6b3n2mcvosG-ojUYaY&type=presentation&title=How to Use TextBlaze" class="button">📊 How to Use TextBlaze</a>
-                <a href="viewer.html?id=1FVz0YM_TlWYi1xweqHoXwoGees_WPWHMU3Hk_gLH2ZI&type=presentation&title=When to Request Templates" class="button">📊 When to Request Templates</a>
-            </div>        </main>    </div>
+        </main>
+    </div>
 
     <!-- Load document registry first -->
     <script src="documents/registry.js"></script>
     
-    <!-- Load all document content files -->
-    <script src="documents/discounts.js"></script>
-    <script src="documents/sizing.js"></script>
-    <script src="documents/brand-tone.js"></script>
-    <script src="documents/double-texting.js"></script>
-    <script src="documents/closing-conversation.js"></script>
-    <script src="documents/escalations.js"></script>
-    <script src="documents/textblaze.js"></script>
-    <script src="documents/template-requests.js"></script>      <!-- Main script -->
+    <!-- Load Admin category documents -->
+    <script src="documents/admin/agent-behavior.js"></script>
+    
+    <!-- Load Content category documents - Navigation -->
+    <script src="documents/content/navigation/when-to-request-templates.js"></script>
+    <script src="documents/content/navigation/templates.js"></script>
+    <script src="documents/content/navigation/system-navigation.js"></script>
+    <script src="documents/content/navigation/global-templates.js"></script>
+    <script src="documents/content/navigation/templates-shortcuts.js"></script>
+    
+    <!-- Load Content category documents - Message Quality -->
+    <script src="documents/content/message-quality/qa-approach.js"></script>
+    <script src="documents/content/message-quality/personalization-empathy.js"></script>
+    
+    <!-- Load Content category documents - Intro -->
+    <script src="documents/content/intro/sub-verticals.js"></script>
+    <script src="documents/content/intro/opting-in-out.js"></script>
+    <script src="documents/content/intro/ecommerce.js"></script>
+    <script src="documents/content/intro/concierge-subscribers.js"></script>
+    <script src="documents/content/intro/attentive-messages.js"></script>
+    
+    <!-- Load Content category documents - Event Quality -->
+    <script src="documents/content/event-quality/blocklist-unsubscribe.js"></script>
+    <script src="documents/content/event-quality/events.js"></script>
+    
+    <!-- Load Content category documents - Conversation Topics - Pre-Purchase -->
+    <script src="documents/content/conversation-topics/pre-purchase/sizing.js"></script>
+    <script src="documents/content/conversation-topics/pre-purchase/payments-accounts.js"></script>
+    <script src="documents/content/conversation-topics/pre-purchase/order-status.js"></script>
+    <script src="documents/content/conversation-topics/pre-purchase/discounts.js"></script>
+    
+    <!-- Load Content category documents - Conversation Topics - Post-Purchase -->
+    <script src="documents/content/conversation-topics/post-purchase/missing-lost-items.js"></script>
+    
+    <!-- Load Content category documents - Conversation Topics - General -->
+    <script src="documents/content/conversation-topics/general/shipping-options.js"></script>
+    <script src="documents/content/conversation-topics/general/driving-to-purchase.js"></script>
+    <script src="documents/content/conversation-topics/general/discounts-rewards.js"></script>
+    <script src="documents/content/conversation-topics/general/rewards-credit.js"></script>
+    
+    <!-- Load Content category documents - Concierge Agent 101 -->
+    <script src="documents/content/concierge-agent-101/responding-to-customers.js"></script>
+    <script src="documents/content/concierge-agent-101/redirecting-to-cs.js"></script>
+    <script src="documents/content/concierge-agent-101/general-client.js"></script>
+    <script src="documents/content/concierge-agent-101/escalations.js"></script>
+    <script src="documents/content/concierge-agent-101/technical-settings.js"></script>
+    
+    <!-- Main script -->
     <script src="script.js"></script>
+    
+    <!-- Folder toggle functionality -->
+    <script>
+        function toggleFolder(header) {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            content.classList.toggle('active');
+            
+            // Animate the folder content
+            if (content.classList.contains('active')) {
+                content.style.display = 'block';
+            } else {
+                setTimeout(() => {
+                    content.style.display = 'none';
+                }, 300);
+            }
+        }
+        
+        // Hide all folder content on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.folder-content').forEach(content => {
+                if (!content.classList.contains('active')) {
+                    content.style.display = 'none';
+                }
+            });
+            
+            // Initialize all subfolder headers to toggle properly
+            document.querySelectorAll('.subfolder-header').forEach(header => {
+                header.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent event bubbling to parent folders
+                    toggleFolder(this);
+                });
+            });
+        });
+    </script>
 </body>
 </html>

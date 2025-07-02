@@ -1,7 +1,7 @@
 /* General Styling */
 body {
     font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+    background: linear-gradient(-45deg, #fff381, #ffe566, #ffdc4d, #ffd633, #ffcd1a, #ffc400);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
     color: #333;
@@ -50,7 +50,7 @@ header::before {
     transform: translateX(-50%);
     width: 100px;
     height: 4px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
+    background: linear-gradient(90deg, #ffc400, #ffaa00);
     border-radius: 2px;
 }
 
@@ -75,7 +75,7 @@ header::before {
 
 header h1 {
     font-size: 3.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #fff381 0%, #ffdc4d 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -128,8 +128,8 @@ header p {
 }
 
 #searchInput:focus {
-    border-color: #5a67d8;
-    box-shadow: 0 0 0 0.25rem rgba(90, 103, 216, 0.15), 0 8px 25px rgba(0,0,0,0.12);
+    border-color: #ffc400;
+    box-shadow: 0 0 0 0.25rem rgba(255, 196, 0, 0.15), 0 8px 25px rgba(0,0,0,0.12);
     outline: none;
     transform: translateY(-2px);
 }
@@ -212,59 +212,141 @@ main h2::before { /* Adding space for icons if they were to be added via CSS */
     font-size: 1.5rem; /* Adjust icon size if needed */
 }
 
-/* Button Grid */
-.button-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Slightly wider buttons */
-    gap: 20px; /* Increased gap */
-    margin-top: 25px;
+/* Folder and File Structure */
+.folder-container {
+    margin-bottom: 40px;
 }
 
-/* Specific styling for search result buttons */
-#searchResultsContainer .button {
+.folder {
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.folder:hover {
+    transform: translateY(-2px);
+}
+
+.folder-header {
     display: flex;
     align-items: center;
-    text-align: left;
-    padding: 15px 20px;
-    height: auto;
-    min-height: 30px; /* Set a min-height to prevent expansion */
-    white-space: nowrap; /* Keep title on one line */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis if title is too long */
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-left: 4px solid #fff381;
 }
 
-#searchResultsContainer .button b {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
+.folder-header:hover {
+    background-color: rgba(255, 243, 129, 0.15);
 }
 
-.button {
-    background-color: #fff; /* Cleaner button background */
-    color: #2d3748; /* Darker text for better contrast */
-    text-decoration: none;
-    padding: 25px; /* Increased padding */
-    border-radius: 10px; /* More rounded corners */
+.folder-header i.fa-folder {
+    color: #fff381;
+    font-size: 1.2rem;
+    margin-right: 15px;
+    transition: transform 0.3s ease;
+}
+
+.folder-header.active i.fa-folder {
+    color: #ffc400;
+    transform: scale(1.1);
+}
+
+.folder-header span {
+    flex-grow: 1;
     font-weight: 600;
-    text-align: left; /* Align text to the left for a cleaner look */
-    border: 1px solid #e2e8f0; /* Softer border */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Softer, more modern shadow */
-    transition: all 0.3s ease-in-out; /* Smoother transition */
-    display: flex; /* For icon alignment */
-    align-items: center; /* For icon alignment */
+    color: #4a5568;
 }
 
-.button:hover {
-    transform: translateY(-5px) scale(1.03); /* Enhanced hover effect */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1); /* More pronounced shadow on hover */
-    border-color: #5a67d8; /* Indigo border on hover */
-    color: #5a67d8; /* Indigo text on hover */
+.folder-header i.folder-arrow {
+    color: #a0aec0;
+    transition: transform 0.3s ease;
 }
 
-.button::before { /* Space for icons (📄, 📊) */
-    margin-right: 12px; /* Slightly more space */
-    font-size: 1.3rem; /* Larger icons */
+.folder-header.active i.folder-arrow {
+    transform: rotate(180deg);
+    color: #4a5568;
+}
+
+.folder-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    margin-top: 0;
+    padding: 0 15px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0 0 10px 10px;
+}
+
+.folder-content.active {
+    max-height: 2000px; /* Increase to accommodate all possible content */
+    transition: max-height 0.5s ease-in, padding 0.3s ease-in;
+    padding: 15px;
+    border-left: 4px solid rgba(255, 243, 129, 0.3);
+    margin-left: 4px;
+}
+
+.file-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    background-color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #4a5568;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.file-button:hover {
+    background-color: rgba(255, 243, 129, 0.1);
+    transform: translateX(5px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: #2d3748;
+}
+
+.file-button i {
+    margin-right: 10px;
+    color: #805ad5;
+    font-size: 1.1rem;
+}
+
+.file-button span {
+    font-weight: 500;
+}
+
+/* Search Results Styles */
+#searchResultsContainer {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#searchResultsContainer mark {
+    background-color: #f6e05e;
+    color: #2d3748;
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+#searchResultsContainer .button-grid {
+    margin-top: 15px;
 }
 
 /* Viewer Page Styling */
@@ -330,7 +412,7 @@ main h2::before { /* Adding space for icons if they were to be added via CSS */
     position: absolute;
     width: 4px;
     height: 4px;
-    background: rgba(102, 126, 234, 0.3);
+    background: rgba(255, 196, 0, 0.3);
     border-radius: 50%;
     animation: float 20s infinite linear;
 }
@@ -382,31 +464,63 @@ main h2::before { /* Adding space for icons if they were to be added via CSS */
     }
 }
 
-/* Search Results Styles */
-#searchResultsContainer {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-#searchResultsContainer mark {
-    background-color: #f6e05e;
+/* Category headings */
+main h2 {
+    font-size: 1.8rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
     color: #2d3748;
-    padding: 0 3px;
-    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 243, 129, 0.5);
 }
 
-#searchResultsContainer .button-grid {
-    margin-top: 15px;
+.category-icon {
+    margin-right: 15px;
+    color: #fff381;
+    font-size: 1.5rem;
+}
+
+/* Subfolder Styling */
+.subfolder {
+    margin-left: 20px;
+    padding-left: 10px;
+    border-left: 1px solid rgba(255, 243, 129, 0.5);
+}
+
+.subfolder-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.subfolder-header:hover {
+    background-color: rgba(255, 243, 129, 0.15);
+}
+
+.subfolder-header i {
+    color: #fff381;
+    font-size: 1.1rem;
+    margin-right: 10px;
+}
+
+.subfolder-header.active {
+    background-color: rgba(255, 243, 129, 0.2);
+    border-left-color: #ffc400;
+}
+
+.subfolder .folder-content {
+    display: none;
+    margin-left: 15px;
+    padding-left: 10px;
+    border-left: 1px dashed rgba(255, 243, 129, 0.5);
+}
+
+.subfolder .folder-content.active {
+    display: block;
 }
