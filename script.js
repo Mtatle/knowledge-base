@@ -29,7 +29,125 @@ window.onload = function() {
         if (iframeElement) { // Check if iframeElement is not null
             iframeElement.src = embedUrl;
         }    
-    } else { // Code for index.html, as docId will be null        
+    } else { // Code for index.html, as docId will be null
+        // --- Sidebar Navigation Logic ---
+        const burgerMenu = document.querySelector('.burger-menu');
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarOverlay = document.querySelector('.sidebar-overlay');
+        const container = document.querySelector('.container');
+        const sidebarMenuItems = document.querySelectorAll('.sidebar-menu-item');
+        const quickLinks = document.querySelectorAll('.quick-link');
+        
+        // Toggle sidebar when burger menu is clicked
+        if (burgerMenu) {
+            burgerMenu.addEventListener('click', toggleSidebar);
+        }
+        
+        // Close sidebar when clicking outside (on overlay)
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', toggleSidebar);
+        }
+        
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            burgerMenu.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            container.classList.toggle('sidebar-active');
+        }
+        
+        // Toggle submenu when sidebar menu item is clicked
+        sidebarMenuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const submenu = this.querySelector('.sidebar-submenu');
+                if (submenu) {
+                    submenu.classList.toggle('active');
+                }
+                
+                // Handle category navigation
+                const category = this.getAttribute('data-category');
+                if (category) {
+                    scrollToCategory(category);
+                }
+            });
+        });
+        
+        // Handle submenu item clicks
+        document.querySelectorAll('.sidebar-submenu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent triggering parent click
+                const folder = this.getAttribute('data-folder');
+                if (folder) {
+                    scrollToFolder(folder);
+                }
+            });
+        });
+        
+        // Handle quick links
+        quickLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const documentId = this.getAttribute('data-document');
+                if (documentId === 'agent-scorecard') {
+                    // Navigate to Agent Scorecard document
+                    openDocument('agent-behavior', 'Admin', 'System');
+                } else if (documentId === 'qa-results') {
+                    // Navigate to QA Results document
+                    openDocument('qa-approach', 'Content', 'Message Quality');
+                }
+            });
+        });
+        
+        function scrollToCategory(category) {
+            const categoryElement = document.querySelector(`h2 i.fas.fa-${category === 'admin' ? 'shield-alt' : 'book'}`).parentNode;
+            if (categoryElement) {
+                categoryElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        function scrollToFolder(folderName) {
+            const folderHeaders = document.querySelectorAll('.folder-header');
+            let folderHeader = null;
+            
+            folderHeaders.forEach(header => {
+                if (header.textContent.trim().toLowerCase().includes(folderName.toLowerCase())) {
+                    folderHeader = header;
+                }
+            });
+            
+            if (folderHeader) {
+                folderHeader.scrollIntoView({ behavior: 'smooth' });
+                // Expand folder if it's collapsed
+                const folderContent = folderHeader.nextElementSibling;
+                if (folderContent && folderContent.style.display === 'none') {
+                    toggleFolder(folderHeader);
+                }
+            }
+        }
+        
+        function openDocument(docName, category, folder) {
+            // First find and click on the category
+            const categoryItem = document.querySelector(`.sidebar-menu-item[data-category="${category.toLowerCase()}"]`);
+            if (categoryItem) {
+                categoryItem.click();
+                
+                // Then find and click on the folder
+                const folderItem = document.querySelector(`.sidebar-submenu-item[data-folder="${folder.toLowerCase()}"]`);
+                if (folderItem) {
+                    folderItem.click();
+                    
+                    // Finally find and click on the document link
+                    setTimeout(() => {
+                        const docLinks = document.querySelectorAll('.file');
+                        docLinks.forEach(link => {
+                            if (link.textContent.trim().toLowerCase().includes(docName.toLowerCase())) {
+                                link.click();
+                            }
+                        });
+                    }, 500); // Give time for folder to expand
+                }
+            }
+        }
+        
         // --- Modern live search logic ---
         const searchInput = document.getElementById('searchInput');
         const mainElement = document.querySelector('main');
@@ -48,142 +166,30 @@ window.onload = function() {
         // Hide/show all folder containers and folders
         function setContentVisible(visible) {
             const folderContainers = mainElement.querySelectorAll('.folder-container');
-            const categoryTitles = mainElement.querySelectorAll('h2');
-            const fileButtons = mainElement.querySelectorAll('.file-button');
+            const categoryHeaders = mainElement.querySelectorAll('h2');
             
             folderContainers.forEach(container => {
                 container.style.display = visible ? 'block' : 'none';
             });
             
-            categoryTitles.forEach(title => {
-                title.style.display = visible ? 'flex' : 'none';
-            });
-            
-            fileButtons.forEach(btn => {
-                if (!btn.closest('.folder-content') || visible) {
-                    btn.style.display = visible ? 'flex' : 'none';
-                }
+            categoryHeaders.forEach(header => {
+                header.style.display = visible ? 'block' : 'none';
             });
         }        
         
-        // Render search results as clickable cards/buttons - ONLY showing titles
-        function renderSearchResults(results, searchTerm) {
-            // Ensure we have the container
-            const searchResultsContainer = document.getElementById('searchResultsContainer');
-            if (!searchResultsContainer) {
-                console.error("Search results container not found");
-                return;
-            }
-            
-            // Clear previous results
-            searchResultsContainer.innerHTML = '';
-            
-            if (results.length === 0) {
-                searchResultsContainer.style.display = 'block';
-                searchResultsContainer.innerHTML = `<p style="text-align:center;font-size:1.1rem;color:#4a5568;font-family:Montserrat,sans-serif;">No results found for "${searchTerm}"</p>`;
-                return;
-            }
-            
-            // Title for results
-            const titleDiv = document.createElement('div');
-            titleDiv.innerHTML = `🔍 Search Results for "${searchTerm}" (${results.length} found)`;
-            titleDiv.style.textAlign = 'center';
-            titleDiv.style.marginBottom = '18px';
-            titleDiv.style.fontSize = '1.15rem';
-            titleDiv.style.fontWeight = '600';
-            titleDiv.style.color = '#ffc400';
-            searchResultsContainer.appendChild(titleDiv);
-            
-            // Results grid
-            const grid = document.createElement('div');
-            grid.className = 'button-grid';
-            
-            results.forEach(res => {
-                const doc = res.document;
-                  // Build the link with ONLY the title (no description)
-                const link = document.createElement('a');
-                link.className = 'button';
-                link.href = `viewer.html?id=${doc.id}&type=${doc.type}&title=${encodeURIComponent(doc.title)}`;
+        // Quick links functionality
+        document.querySelectorAll('.quick-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const documentId = this.getAttribute('data-document');
                 
-                // Create title element
-                const titleElem = document.createElement('b');
-                titleElem.textContent = doc.title;
-                  // Create icon and append title only
-                link.innerHTML = `${doc.type === 'presentation' ? '📊' : '📄'} `;
-                link.appendChild(titleElem);
-                
-                // Add location information (category/folder/subfolder) if available
-                if (doc.category || doc.folder) {
-                    const locationElem = document.createElement('small');
-                    let locationText = '';
-                    
-                    if (doc.category && window.documentRegistry.categories[doc.category]) {
-                        locationText += window.documentRegistry.categories[doc.category].title;
-                    }
-                    
-                    if (doc.folder && doc.category && 
-                        window.documentRegistry.categories[doc.category].folders[doc.folder]) {
-                        locationText += ' > ' + window.documentRegistry.categories[doc.category].folders[doc.folder].title;
-                    }
-                    
-                    if (doc.subfolder && doc.folder && doc.category && 
-                        window.documentRegistry.categories[doc.category].folders[doc.folder].subfolders && 
-                        window.documentRegistry.categories[doc.category].folders[doc.folder].subfolders[doc.subfolder]) {
-                        locationText += ' > ' + window.documentRegistry.categories[doc.category].folders[doc.folder].subfolders[doc.subfolder].title;
-                    }
-                    
-                    if (locationText) {
-                        locationElem.textContent = locationText;
-                        locationElem.style.display = 'block';
-                        locationElem.style.fontSize = '0.8rem';
-                        locationElem.style.color = '#718096';
-                        locationElem.style.marginTop = '5px';
-                        link.appendChild(locationElem);
-                    }
-                }
-                
-                // Force style to ensure only title shows (no description)
-                link.style.height = 'auto';
-                link.style.minHeight = '30px';
-                
-                grid.appendChild(link);
-            });
-            
-            searchResultsContainer.appendChild(grid);
-            searchResultsContainer.style.display = 'block';
-            
-            // Make sure it's visible - scroll to it if needed
-            searchResultsContainer.scrollIntoView({behavior: 'smooth', block: 'nearest'});
-        }
-
-        // --- Live search event ---
-        if (searchInput && mainElement) {
-            searchInput.addEventListener('input', function() {
-                const searchTerm = searchInput.value.trim();
-                if (searchTerm.length === 0) {
-                    searchResultsContainer.style.display = 'none';
-                    setContentVisible(true);
-                    return;
-                }                
-                
-                // Use registry for full-text search
-                if (window.documentRegistry && typeof window.documentRegistry.searchDocuments === 'function') {
-                    console.log(`Searching for: "${searchTerm}"`);
-                    const results = window.documentRegistry.searchDocuments(searchTerm);
-                    console.log(`Search returned ${results.length} results:`, results);
-                    setContentVisible(false);
-                    renderSearchResults(results, searchTerm);
-                } else {
-                    console.error('Document registry not found or searchDocuments method missing');
+                // Handle specific quick links
+                if (documentId === 'agent-scorecard') {
+                    window.location.href = 'viewer.html?id=agent-behavior&type=doc&title=Agent%20Scorecard';
+                } else if (documentId === 'qa-results') {
+                    window.location.href = 'viewer.html?id=qa-approach&type=doc&title=QA%20Results';
                 }
             });
-        }
-
-        // Ensure all folder content is hidden on load
-        document.querySelectorAll('.folder-content').forEach(content => {
-            if (!content.classList.contains('active')) {
-                content.style.display = 'none';
-            }
         });
     }
 };
