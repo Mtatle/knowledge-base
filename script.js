@@ -208,4 +208,51 @@ window.onload = function() {
             });
         });
     }
+
+    // --- Main content subfolder toggle logic ---
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.subfolder-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Only one subfolder open at a time
+                const parent = header.parentElement.parentElement;
+                parent.querySelectorAll('.subfolder .folder-content').forEach(content => {
+                    if (content !== header.nextElementSibling) {
+                        content.classList.remove('active');
+                        content.style.display = 'none';
+                    }
+                });
+                header.classList.toggle('active');
+                const content = header.nextElementSibling;
+                content.classList.toggle('active');
+                if (content.classList.contains('active')) {
+                    content.style.display = 'block';
+                } else {
+                    setTimeout(() => {
+                        content.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+    });
+
+    // --- Burger menu movement logic ---
+    window.addEventListener('DOMContentLoaded', function() {
+        const burgerMenu = document.querySelector('.burger-menu');
+        const sidebar = document.querySelector('.sidebar');
+        if (burgerMenu && sidebar) {
+            function updateBurgerPosition() {
+                if (sidebar.classList.contains('active')) {
+                    burgerMenu.style.left = '320px';
+                } else {
+                    burgerMenu.style.left = '20px';
+                }
+            }
+            // Initial position
+            updateBurgerPosition();
+            // Listen for sidebar toggle
+            const observer = new MutationObserver(updateBurgerPosition);
+            observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+        }
+    });
 };
