@@ -75,6 +75,14 @@ window.onload = function() {
         document.querySelectorAll('.sidebar-submenu-item').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.stopPropagation(); // Prevent triggering parent click
+                
+                // Toggle file list visibility
+                const fileList = this.querySelector('.sidebar-file-list');
+                if (fileList) {
+                    fileList.style.display = fileList.style.display === 'none' ? 'block' : 
+                                           (fileList.style.display === 'block' ? 'none' : 'block');
+                }
+                
                 const folder = this.getAttribute('data-folder');
                 if (folder) {
                     scrollToFolder(folder);
