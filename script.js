@@ -74,25 +74,15 @@ window.onload = function() {
         // Handle submenu item clicks
         document.querySelectorAll('.sidebar-submenu-item').forEach(item => {
             item.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent triggering parent click
-                
+                e.stopPropagation();
                 // Toggle file list or subfolder list visibility
                 const fileList = this.querySelector('.sidebar-file-list');
                 const subfolderList = this.querySelector('.sidebar-subfolder-list');
-                
                 if (fileList && !subfolderList) {
-                    fileList.style.display = fileList.style.display === 'none' ? 'block' : 
-                                           (fileList.style.display === 'block' ? 'none' : 'block');
+                    fileList.style.display = fileList.style.display === 'none' ? 'block' : 'none';
                 }
-                
                 if (subfolderList) {
-                    subfolderList.style.display = subfolderList.style.display === 'none' ? 'block' : 
-                                                 (subfolderList.style.display === 'block' ? 'none' : 'block');
-                }
-                
-                const folder = this.getAttribute('data-folder');
-                if (folder) {
-                    scrollToFolder(folder);
+                    subfolderList.style.display = subfolderList.style.display === 'none' ? 'block' : 'none';
                 }
             });
         });
@@ -100,13 +90,10 @@ window.onload = function() {
         // Handle subfolder item clicks
         document.querySelectorAll('.sidebar-subfolder-item').forEach(item => {
             item.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent triggering parent click
-                
-                // Toggle file list visibility
+                e.stopPropagation();
                 const fileList = this.querySelector('.sidebar-file-list');
                 if (fileList) {
-                    fileList.style.display = fileList.style.display === 'none' ? 'block' : 
-                                           (fileList.style.display === 'block' ? 'none' : 'block');
+                    fileList.style.display = fileList.style.display === 'none' ? 'block' : 'none';
                 }
             });
         });
