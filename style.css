@@ -34,7 +34,11 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
     z-index: 2;
-    transition: none;
+    transition: transform 0.3s ease;
+}
+
+.container.sidebar-active {
+    transform: translateX(320px);
 }
 
 header {
@@ -273,19 +277,15 @@ main h2::before { /* Adding space for icons if they were to be added via CSS */
 .folder-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-    margin-top: 0;
-    padding: 0 15px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 0 0 10px 10px;
+    transition: max-height 0.3s ease-out;
+    background-color: #fafafa;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
 .folder-content.active {
-    max-height: 2000px; /* Increase to accommodate all possible content */
-    transition: max-height 0.5s ease-in, padding 0.3s ease-in;
     padding: 15px;
-    border-left: 4px solid rgba(255, 243, 131, 0.3);
-    margin-left: 4px;
+    border-top: 1px solid #e2e8f0;
 }
 
 .file-button {
@@ -517,14 +517,7 @@ main h2 {
 }
 
 .subfolder .folder-content {
-    display: none;
-    margin-left: 15px;
-    padding-left: 10px;
-    border-left: 1px dashed rgba(255, 243, 129, 0.5);
-}
-
-.subfolder .folder-content.active {
-    display: block;
+    background: #fdfdfd;
 }
 
 /* Sidebar Navigation */
@@ -777,9 +770,4 @@ main h2 {
 .quick-link i {
     margin-right: 8px;
     color: #ffc400;
-}
-
-/* Adjust container for sidebar */
-.container.sidebar-active {
-    margin-left: 320px !important;
 }

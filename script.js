@@ -255,4 +255,36 @@ window.onload = function() {
             observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
         }
     });
+
+    // --- Unified Folder & Subfolder Toggle Logic ---
+    function toggleFolder(header) {
+        header.classList.toggle('active');
+        const content = header.nextElementSibling;
+        if (content) {
+            content.classList.toggle('active');
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Main content folders
+        document.querySelectorAll('main .folder-header, main .subfolder-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleFolder(this);
+            });
+        });
+
+        // Hide all folder content on page load
+        document.querySelectorAll('.folder-content').forEach(content => {
+            // We set maxHeight to 0 instead of display:none for transitions
+            if (!content.classList.contains('active')) {
+                content.style.maxHeight = null;
+            }
+        });
+    });
 };
